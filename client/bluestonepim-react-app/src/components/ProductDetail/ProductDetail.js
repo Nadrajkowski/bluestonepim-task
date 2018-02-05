@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import _ from 'lodash';
 import './ProductDetail.css';
 
 
@@ -8,8 +9,8 @@ class ProductDetail extends Component {
 
     constructor(props){
         super(props);
+        this.addImage = this.addImage.bind(this);
         this.getProduct = this.getProduct.bind(this);
-        this.toggleView = this.toggleView.bind(this);
         this.staticView = this.staticView.bind(this);
         this.changeToUpdateView = this.changeToUpdateView.bind(this);
         this.cancelUpdate = this.cancelUpdate.bind(this);
@@ -39,11 +40,19 @@ class ProductDetail extends Component {
     handleNameChange(event){ this.setState({ product_name: event.target.value }); }
     handleNumberChange(event){ this.setState({ product_number: event.target.value }); }
     handleDescriptionChange(event){ this.setState({ product_description: event.target.value }); }
-
-    toggleView(){
-        const new_view_mode = this.state.view_mode === 'static' ? 'update' : 'static';
-        this.setState({view_mode: new_view_mode});
+    handleImageNameChange(imageId, event){
+        var newImageArray = this.state.product_images;
+        const index = _.findIndex(newImageArray, {id: imageId});
+        newImageArray[index].name = event.target.value;
+        this.setState({product_images: newImageArray});
     }
+    handleImageUrlChange(imageId, event){
+        var newImageArray = this.state.product_images;
+        const index = _.findIndex(newImageArray, {id: imageId});
+        newImageArray[index].url = event.target.value;
+        this.setState({product_images: newImageArray});
+    }
+
 
     changeToUpdateView(){
         this.setState({
@@ -66,8 +75,8 @@ class ProductDetail extends Component {
     }
 
     saveUpdate(){
-        const product_id = this.props.location.pathname.split('/')[3]
-        const path = 'http://localhost:8000/products/' + product_id
+        const product_id = this.props.location.pathname.split('/')[3];
+        const path = 'http://localhost:8000/products/' + product_id;
         axios({
             url: path,
             method: 'put',
@@ -79,12 +88,12 @@ class ProductDetail extends Component {
             }
         })
             .then(() => {this.setState({ view_mode: 'static' });})
-            .catch(error => alert(error.message));
+            .catch(error => console.log(error));
     }
 
     getProduct(){
-        const product_id = this.props.location.pathname.split('/')[3]
-        const path = 'http://localhost:8000/products/' + product_id
+        const product_id = this.props.location.pathname.split('/')[3];
+        const path = 'http://localhost:8000/products/' + product_id;
         axios.get(path)
             .then(response => this.setState({
                 product_name: response.data.name,
@@ -95,10 +104,18 @@ class ProductDetail extends Component {
             .catch(err => alert(err.message));
     }
 
+    deleteImage(imageId){
+        const filteredImages = _.filter(this.state.product_images, function(image){
+            return imageId !== image.id
+        });
+        this.setState({ product_images: filteredImages});
+    }
+
     staticView(){
         const images = this.state.product_images.map((image) =>
             <div>
-                <span>{image}</span>
+                <span>{"Name: " + image.name}</span>
+                <span>{"Url: " + image.url}</span>
                 <br/>
             </div>
         );
@@ -120,11 +137,19 @@ class ProductDetail extends Component {
         );
     }
 
+    addImage(){
+        var newImagesArray = this.state.product_images;
+        newImagesArray.push({id: "bluestonepim_image_"+Date.now(), name: "new image name", url: "new image URL"});
+        this.setState({product_images: newImagesArray});
+    }
+
 
     updateView(){
         const images = this.state.product_images.map((image) =>
-            <div>
-                <input value={image}></input>
+            <div key={image.id}>
+                <span>Name: </span><input onChange={(e) => this.handleImageNameChange(image.id, e)} value={image.name}></input>
+                <span>Url: </span><input onChange={(e) => this.handleImageUrlChange(image.id, e)} value={image.url}></input>
+                <button onClick={() => this.deleteImage(image.id)}>Delete</button>
                 <br/>
             </div>
         );
@@ -144,8 +169,7 @@ class ProductDetail extends Component {
                 <span>Images:</span>
                 <br/>
                 <div>{images}</div>
-                <br/>
-                <button>add image</button>
+                <button onClick={this.addImage}>add image</button>
                 <br/>
                 <button onClick={this.cancelUpdate}>cancel</button>
                 <button onClick={this.saveUpdate}>save</button>
@@ -154,8 +178,7 @@ class ProductDetail extends Component {
     }
 
     render() {
-        const view = this.state.view_mode === 'static' ? this.staticView() : this.updateView();
-        return view;
+        return this.state.view_mode === 'static' ? this.staticView() : this.updateView();
     }
 }
 
