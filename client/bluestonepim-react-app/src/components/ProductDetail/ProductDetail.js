@@ -3,6 +3,36 @@ import axios from 'axios';
 import _ from 'lodash';
 import './ProductDetail.css';
 
+function StaticAttribute(props){
+    var valueHolder;
+    switch(props.type){
+        case 'p': valueHolder = <p>{props.product_value}</p>;break;
+        default: valueHolder = <span className="material">{props.product_value}</span>
+    }
+    return (
+        <div className="material div">
+            <span className="ProductDetail-attribute descriptor">{props.descriptor}</span><br/>
+            {valueHolder}
+        </div>
+    )
+}
+
+function Button(props){
+    return (
+        <button onClick={props.onClick} className={"material btn "+props.type} >{props.value}</button>
+    )
+}
+
+function ImagesContainer(props){
+    return(
+        <div className="material div">
+            <span className="ProductDetail-attribute descriptor">Images: </span><br/>
+            {props.images}
+            <br/>
+        </div>
+    )
+}
+
 
 
 class ProductDetail extends Component {
@@ -34,7 +64,7 @@ class ProductDetail extends Component {
     }
     addImage(){
         var newImagesArray = this.state.product_images;
-        newImagesArray.push({id: "bluestonepim_image_"+Date.now()+_.uniqueId(), name: "new image name", url: "new image URL"});
+        newImagesArray.push({id: "bluestonepim_image_"+Date.now()+_.uniqueId(), name: "new image name", url: "http://new.image/url"});
         this.setState({product_images: newImagesArray});
     }
     cancelUpdate(){
@@ -114,28 +144,16 @@ class ProductDetail extends Component {
                 <br/>
             </div>
         );
+
         const {product_name, product_number, product_description} = this.state;
         return (
             <div className="App">
                 <h2>Static View</h2>
-                <div className="material div">
-                    <span className="ProductDetail-attribute descriptor">Name: </span><br/>
-                    <span className="material">{product_name}</span>
-                </div>
-                <div className="material div">
-                    <span className="ProductDetail-attribute descriptor">Number: </span><br/>
-                    <span className="material">{product_number}</span>
-                </div>
-                <div className="material div">
-                    <span className="ProductDetail-attribute descriptor">Description: </span><br/>
-                    <p>{product_description}</p>
-                </div>
-                <div className="material div">
-                    <span className="ProductDetail-attribute descriptor">Images: </span><br/>
-                    <div>{images}</div>
-                </div>
-                <br/>
-                <button className="material btn" onClick={this.changeToUpdateView}>update</button>
+                <StaticAttribute descriptor={"Name: "} product_value={product_name}/>
+                <StaticAttribute descriptor={"Number: "} product_value={product_number}/>
+                <StaticAttribute type={"p"} descriptor={"Description: "} product_value={product_description}/>
+                <ImagesContainer images={images}/>
+                <Button value={"update"} onClick={this.changeToUpdateView} />
             </div>
         );
     }
@@ -146,7 +164,7 @@ class ProductDetail extends Component {
                 <input className="material text-input" onChange={(e) => this.handleImageNameChange(image.id, e)} value={image.name}></input>
                 <span className="ProductDetail-attribute descriptor">URL: </span>
                 <input className="material text-input" onChange={(e) => this.handleImageUrlChange(image.id, e)} value={image.url}></input>
-                <button className="material btn danger" onClick={() => this.deleteImage(image.id)}>Delete</button>
+                <Button value="delete" type={"danger"} onClick={() => this.deleteImage(image.id)}></Button>
             </div>
         );
         const {product_name, product_number, product_description} = this.state;
@@ -164,13 +182,10 @@ class ProductDetail extends Component {
 
                 <span className="ProductDetail-attribute descriptor">Description: </span><br/>
                 <textarea className="material textarea" onChange={this.handleDescriptionChange} value={product_description}></textarea><br/>
-                <div className="material div">
-                    <span className="ProductDetail-attribute descriptor">Images: </span><br/>
-                    <div>{images}</div>
-                    <button className="material btn" onClick={this.addImage}>add image</button>
-                </div>
-                <button className="material btn danger" onClick={this.cancelUpdate}>cancel</button>
-                <button className="material btn success" onClick={this.saveUpdate}>save</button>
+                <ImagesContainer images={images}/>
+                <Button value="add image" onClick={this.addImage}/>
+                <Button type="danger" value="cancel" onClick={this.cancelUpdate} />
+                <Button type="success" value="save" onClick={this.saveUpdate} />
             </div>
         );
     }
