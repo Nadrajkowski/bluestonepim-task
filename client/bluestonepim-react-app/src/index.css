@@ -1,5 +1,116 @@
+:root {
+  --main-accent-color: #333a56;
+  --main-accent-color-dark: #222845;
+  --main-accent-color-inside: #e8e8e8;
+  --main-bg-color: #f4f4f4;
+  --main-bg-color-inside: #333a56;
+  --secondary-accent-color: #52658f;
+  --secondary-accent-color-dark: #30436d;
+  --secondary-accent-color-inside: #e8e8e8;
+}
+
 body {
+  background-color: var(--main-bg-color);
+  color: var(--main-accent-color);
   margin: 0;
   padding: 0;
   font-family: sans-serif;
 }
+
+p {
+  margin:10px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+.material {
+  background-color: var(--main-bg-color);
+  border-radius: 3px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.26);
+  color: var(--main-bg-color-inside);
+  margin: 5px;
+}
+
+material.div {
+  margin: 10px;
+  padding: 10px;
+}
+
+span.material, a.material {
+  background-color: var(--main-bg-color);
+  border: none;
+  color: var(--main-bg-color-inside);
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 32px;
+  padding: 0 5px 0 5px;
+  position: relative;
+  min-width: 100px;
+  height: 32px;
+}
+
+.material.text-input {
+  background-color: var(--main-bg-color);
+  border: none;
+  color: var(--main-bg-color-inside);
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 32px;
+  padding-left: 5px;
+  position: relative;
+  width: 200px;
+  height: 32px;
+}
+.material.text-input:focus {
+  outline: 2px dashed var(--secondary-accent-color);
+}
+
+.material.textarea {
+  border: none;
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 32px;
+  padding-left: 5px;
+  position: relative;
+  width: 80%;
+  height: 130px;
+}
+.material.textarea:focus {
+  outline: 2px dashed var(--secondary-accent-color);
+}
+
+.material.btn {
+  background-color: var(--secondary-accent-color);
+  border: 0;
+  cursor: pointer;
+  color: var(--secondary-accent-color-inside);
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 32px;
+  position: relative;
+  text-align: center;
+  transition: all .3s;
+  width: 120px;
+  height: 32px;
+}
+.material.btn:hover {
+  background-color: var(--secondary-accent-color-dark);
+}
+.material.btn.danger {
+  background-color: red;
+}
+.material.btn.danger:hover {
+  background-color: darkred;
+}
+.material.btn.success {
+  background-color: green;
+}
+.material.btn.success:hover {
+  background-color: darkgreen;
+}
+

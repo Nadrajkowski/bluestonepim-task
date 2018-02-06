@@ -1,3 +1,9 @@
-span {
-    margin: 5px;
+.ProductDetail-attribute {
+    color: black;
+    font-size: medium;
+    margin: 10px;
+}
+.ProductDetail-attribute.descriptor {
+    color: grey;
+    font-size: small;
 }
