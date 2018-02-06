@@ -117,7 +117,7 @@ class ProductDetail extends Component {
         const {product_name, product_number, product_description} = this.state;
         return (
             <div className="App">
-                <h1>ProductDetail</h1>
+                <h2>Static View</h2>
                 <div className="material div">
                     <span className="ProductDetail-attribute descriptor">Name: </span><br/>
                     <span className="material">{product_name}</span>
@@ -152,7 +152,7 @@ class ProductDetail extends Component {
         const {product_name, product_number, product_description} = this.state;
         return (
             <div className="App">
-                <h1>Update ProductDetail</h1>
+                <h2>Update View</h2>
                 <div className="material div">
                     <span className="ProductDetail-attribute descriptor">Name: </span><br/>
                     <input className="material text-input" onChange={this.handleNameChange} value={product_name}></input>
@@ -175,7 +175,14 @@ class ProductDetail extends Component {
         );
     }
     render() {
-        return this.state.view_mode === 'static' ? this.staticView() : this.updateView();
+        const detailView = this.state.view_mode === 'static' ? this.staticView() : this.updateView();
+        return(
+            <div>
+                <a href="/">home page</a>
+                <h1>Product Details Page</h1>
+                <div>{detailView}</div>
+            </div>
+        )
     }
 }
 

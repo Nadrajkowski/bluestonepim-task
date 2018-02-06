@@ -16,8 +16,6 @@ class Products extends Component {
     componentDidMount(){
         this.getProducts();
     }
-
-
     getProducts(){
         axios.get(this.state.apiPath)
             .then(response => this.setState({products: response.data}))
@@ -29,16 +27,13 @@ class Products extends Component {
         console.log(this.state.products)
         const listItems = this.state.products.map((product) =>
             <div key={product._id}>
-                <a href={'products/detailed/' + product._id}>{product.name}</a>
+                <a className="material" href={'products/detailed/' + product._id}>{product.name}</a>
                 <br/>
             </div>
         );
-
-
-
         return (
             <div className="App">
-                <h1>Products</h1>
+                <h1>Products Page</h1>
                 <div>{listItems}</div>
             </div>
         );
