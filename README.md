@@ -1,8 +1,8 @@
-#BluestonePIM recruitment task
+# BluestonePIM recruitment task
 
-##setup
+## setup
 
-###client
+### client
 ```sh
 #install dependecies
 npm install
@@ -10,7 +10,9 @@ npm install
 npm start
 ```
 
-###api
+### api
+
+to run the development server of the api a MongoDB must be running on localhost:27017
 ```sh
 #install dependecies
 npm install
