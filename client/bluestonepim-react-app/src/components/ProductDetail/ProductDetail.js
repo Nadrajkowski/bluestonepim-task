@@ -76,6 +76,7 @@ class ProductDetail extends Component {
             product_images: this.state.old_product_images
         });
     }
+
     changeToUpdateView(){
         this.setState({
             view_mode: 'update',
